@@ -142,6 +142,9 @@ namespace Orchard.DisplayManagement.Implementation {
         }
 
         private bool TryGetDescriptorBinding(string shapeType, IEnumerable<string> shapeAlternates, ShapeTable shapeTable, string bindingType, out ShapeBinding shapeBinding) {
+
+            var prefix = bindingType == "Display" ? string.Empty : string.Concat(bindingType, "@");
+
             // shape alternates are optional, fully qualified binding names
             // the earliest added alternates have the lowest priority
             // the descriptor returned is based on the binding that is matched, so it may be an entirely
@@ -149,12 +152,12 @@ namespace Orchard.DisplayManagement.Implementation {
             foreach (var shapeAlternate in shapeAlternates.Reverse()) {
 
                 foreach (var shapeBindingResolver in _shapeBindingResolvers) {
-                    if(shapeBindingResolver.TryGetDescriptorBinding(shapeAlternate, out shapeBinding)) {
+                    if(shapeBindingResolver.TryGetDescriptorBinding(prefix + shapeAlternate, out shapeBinding)) {
                         return true;
                     }
                 }
 
-                if (shapeTable.Bindings.TryGetValue(string.Concat(bindingType, "@", shapeAlternate), out shapeBinding)) {
+                if (shapeTable.Bindings.TryGetValue(prefix + shapeAlternate, out shapeBinding)) {
                     return true;
                 }
             }
@@ -165,12 +168,12 @@ namespace Orchard.DisplayManagement.Implementation {
             var shapeTypeScan = shapeType;
             for (; ; ) {
                 foreach (var shapeBindingResolver in _shapeBindingResolvers) {
-                    if (shapeBindingResolver.TryGetDescriptorBinding(shapeTypeScan, out shapeBinding)) {
+                    if (shapeBindingResolver.TryGetDescriptorBinding(prefix + shapeTypeScan, out shapeBinding)) {
                         return true;
                     }
                 }
 
-                if (shapeTable.Bindings.TryGetValue(string.Concat(bindingType, "@", shapeTypeScan), out shapeBinding)) {
+                if (shapeTable.Bindings.TryGetValue(prefix + shapeTypeScan, out shapeBinding)) {
                     return true;
                 }
 

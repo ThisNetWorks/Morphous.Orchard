@@ -65,9 +65,9 @@ namespace Orchard.DisplayManagement.Descriptors {
                         return target(displayContext);
                     }
                 };
-
+                var prefix = _bindingType == "Display" ? string.Empty : string.Concat(_bindingType, "@");
                 // ShapeDescriptor.Bindings is a case insensitive dictionary
-                descriptor.Bindings[_bindingName] = binding;
+                descriptor.Bindings[prefix + _bindingName] = binding;
 
             });
         }
