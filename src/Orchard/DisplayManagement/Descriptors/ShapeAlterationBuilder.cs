@@ -12,6 +12,7 @@ namespace Orchard.DisplayManagement.Descriptors {
         readonly string _shapeType;
         readonly string _bindingName;
         readonly IList<Action<ShapeDescriptor>> _configurations = new List<Action<ShapeDescriptor>>();
+        string _bindingType = "Display";
 
         public ShapeAlterationBuilder(Feature feature, string shapeType) {
             _feature = feature;
@@ -28,6 +29,14 @@ namespace Orchard.DisplayManagement.Descriptors {
 
         public ShapeAlterationBuilder From(Feature feature) {
             _feature = feature;
+            return this;
+        }
+
+        public ShapeAlterationBuilder BindingType(string bindingType) {
+            if (!string.IsNullOrEmpty(bindingType)) {
+                _bindingType = bindingType;
+            }
+
             return this;
         }
 
