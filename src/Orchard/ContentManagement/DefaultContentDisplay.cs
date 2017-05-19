@@ -55,7 +55,9 @@ namespace Orchard.ContentManagement {
             var workContext = _workContextAccessor.GetContext(_requestContext.HttpContext);
             context.Layout = workContext.Layout;
 
-            BindPlacement(context, actualDisplayType, stereotype);
+            var bindingType = (string)itemShape.Metadata.BindingType;
+
+            BindPlacement(context, actualDisplayType, stereotype, bindingType);
 
             _handlers.Value.Invoke(handler => handler.BuildDisplay(context), Logger);
             return context.Shape;
@@ -78,7 +80,7 @@ namespace Orchard.ContentManagement {
             var context = new BuildEditorContext(itemShape, content, groupId, _shapeFactory);
             var workContext = _workContextAccessor.GetContext(_requestContext.HttpContext);
             context.Layout = workContext.Layout;
-            BindPlacement(context, null, stereotype);
+            BindPlacement(context, null, stereotype, null);
 
             _handlers.Value.Invoke(handler => handler.BuildEditor(context), Logger);
 
@@ -107,7 +109,7 @@ namespace Orchard.ContentManagement {
 
             var context = new UpdateEditorContext(itemShape, content, updater, groupInfoId, _shapeFactory, shapeTable, GetPath());
             context.Layout = workContext.Layout;
-            BindPlacement(context, null, stereotype);
+            BindPlacement(context, null, stereotype, null);
 
             _handlers.Value.Invoke(handler => handler.UpdateEditor(context), Logger);
 
@@ -118,7 +120,7 @@ namespace Orchard.ContentManagement {
             return _shapeFactory.Create(actualShapeType, Arguments.Empty(), () => new ZoneHolding(() => _shapeFactory.Create("ContentZone", Arguments.Empty())));
         }
 
-        private void BindPlacement(BuildShapeContext context, string displayType, string stereotype) {
+        private void BindPlacement(BuildShapeContext context, string displayType, string stereotype, string bindingType) {
             context.FindPlacement = (partShapeType, differentiator, defaultLocation) => {
 
                 var workContext = _workContextAccessor.GetContext(_requestContext.HttpContext);
@@ -133,6 +135,7 @@ namespace Orchard.ContentManagement {
                         ContentType = context.ContentItem.ContentType,
                         Stereotype = stereotype,
                         DisplayType = displayType,
+                        BindingType = bindingType,
                         Differentiator = differentiator,
                         Path = GetPath()
                     };

@@ -126,8 +126,16 @@ namespace Orchard.DisplayManagement.Descriptors.ShapeTemplateStrategy {
                         iter.shapeContext.harvestShapeHit.ShapeType,
                         featureDescriptor.Id);
 
+                    var bindingType = string.Empty;
+                    if (iter.shapeContext.harvestShapeHit.ShapeType.Contains("@")) {
+                        var shapeParts = iter.shapeContext.harvestShapeHit.ShapeType.Split('@');
+                        iter.shapeContext.harvestShapeHit.ShapeType = shapeParts[1];
+                        bindingType = shapeParts[0];
+                    }
+
                     builder.Describe(iter.shapeContext.harvestShapeHit.ShapeType)
                         .From(new Feature { Descriptor = featureDescriptor })
+                        .BindingType(bindingType)
                         .BoundAs(
                             hit.shapeContext.harvestShapeInfo.TemplateVirtualPath,
                             shapeDescriptor => displayContext => Render(shapeDescriptor, displayContext, hit.shapeContext.harvestShapeInfo, hit.shapeContext.harvestShapeHit));
