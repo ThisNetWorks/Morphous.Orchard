@@ -1,0 +1,3 @@
+[submodule "src/Orchard.Web/Modules/Morphous.Api"]
+	path = src/Orchard.Web/Modules/Morphous.Api
+	url = git@github.com:ThisNetWorks/Morphous.Api.git
