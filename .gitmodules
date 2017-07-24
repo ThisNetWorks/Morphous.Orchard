@@ -1,3 +1,6 @@
 [submodule "src/Orchard.Web/Modules/Morphous.Api"]
 	path = src/Orchard.Web/Modules/Morphous.Api
 	url = git@github.com:ThisNetWorks/Morphous.Api.git
+[submodule "src/Orchard.Web/Modules/Morphous.Api.Native"]
+	path = src/Orchard.Web/Modules/Morphous.Api.Native
+	url = git@github.com:ThisNetWorks/Morphous.Api.Native.git
